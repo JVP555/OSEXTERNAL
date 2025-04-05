@@ -92,8 +92,12 @@ int main() {
     }
 
     // Output table
+    double avg_ta=0;
+    double avg_w=0;
     printf("\nProcess\tArrival Time\tBurst Time\tCompletion Time\tTurnaround Time\tWaiting Time\n");
     for (int i = 0; i < n; i++) {
+        avg_ta += p[i].tt;
+        avg_w += p[i].wt;
         printf("%7d\t%12d\t%10d\t%15d\t%15d\t%13d\n",
                p[i].pid, p[i].at, p[i].bt, p[i].ct, p[i].tt, p[i].wt);
     }
@@ -123,6 +127,14 @@ int main() {
     for (int i = 0; i < k; i++) {
         printf("%1d\t", time[i]);
     }
+
+    printf("\nAVERAGE TURNAROUND TIME\n");
+
+    printf("%.2lf\n",avg_ta/n);
+
+    printf("AVERAGE WAITING TIME\n");
+
+    printf("%.2lf",avg_w/n);
 
     printf("\n");
     return 0;
