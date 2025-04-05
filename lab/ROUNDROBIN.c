@@ -68,8 +68,14 @@ int main() {
         }
         if (!executed) {
             // CPU idle
-            seq[k] = 0;     // 0 represents idle
-            t++;
+            seq[k] = 0;
+            int nextArrival = MAX;  
+            for (int i = 0; i < n; i++) {
+                if (p[i].rt > 0 && p[i].at > t) {
+                    nextArrival = (p[i].at < nextArrival) ? p[i].at : nextArrival;
+                }
+            }     // 0 represents idle
+            t= nextArrival;
             time[k++] = t;
         }
     }
