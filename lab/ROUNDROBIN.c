@@ -10,6 +10,7 @@ typedef struct {
     int wt;
     int ct;
     int tt;
+    int rt;
 } process;
 
 int main() {
@@ -17,7 +18,7 @@ int main() {
     printf("Enter the number of processes: ");
     scanf("%d", &n);
 
-    int seq[MAX], time[MAX], b[n], k = 0, t = 0, done = 0;
+    int seq[MAX], time[MAX], k = 0, t = 0, done = 0;
     process p[n];
 
     // Input
@@ -27,7 +28,7 @@ int main() {
         scanf("%d", &p[i].at);
         printf("Enter the burst time for process %d: ", i + 1);
         scanf("%d", &p[i].bt);
-        b[i] = p[i].bt;  // Copy burst time
+        p[i].rt = p[i].bt;  // Copy burst time
     }
 
     // Sort by arrival time
@@ -38,10 +39,6 @@ int main() {
                 process temp = p[j];
                 p[j] = p[j + 1];
                 p[j + 1] = temp;
-
-                int tmp = b[j];
-                b[j] = b[j + 1];
-                b[j + 1] = tmp;
             }
         }
     }
@@ -50,18 +47,18 @@ int main() {
     while (done < n) {
         int executed = 0;
         for (int i = 0; i < n; i++) {
-            if (b[i] > 0 && p[i].at <= t) {
+            if (p[i].rt > 0 && p[i].at <= t) {
                 executed = 1;
-                if (b[i] > QUANTUM) {
+                if (p[i].rt > QUANTUM) {
                     seq[k] = p[i].pid;
                     t += QUANTUM;
                     time[k++] = t;
-                    b[i] -= QUANTUM;
+                    p[i].rt -= QUANTUM;
                 } else {
                     seq[k] = p[i].pid;
-                    t += b[i];
+                    t += p[i].rt;
                     time[k++] = t;
-                    b[i] = 0;
+                    p[i].rt = 0;
                     p[i].ct = t;
                     p[i].tt = p[i].ct - p[i].at;
                     p[i].wt = p[i].tt - p[i].bt;
